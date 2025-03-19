@@ -7,23 +7,35 @@ export function formatProduct(json) {
   let edges = [];
 
   function traverseProduct(product) {
-    const { nodeId, productName, operations } = product;
+    const { nodeId, productName, operations, ...data } = product;
+    // console.log(data);
 
     nodes.push({
       id: nodeId,
       text: productName || "NO NAME",
       data: {
         type: "product",
+        content: data,
       },
     });
 
     if (operations) {
       operations.forEach((operation) => {
+        const {
+          nodeId,
+          operationName,
+          parameters,
+          rawMaterials,
+          products,
+          ...data
+        } = operation;
+
         nodes.push({
-          id: operation.nodeId,
-          text: operation.operationName || "NO NAME",
+          id: nodeId,
+          text: operationName || "NO NAME",
           data: {
             type: "operation",
+            content: { ...data, parameters, rawMaterials, products },
           },
         });
 
@@ -34,13 +46,15 @@ export function formatProduct(json) {
         });
 
         // Traverse raw materials
-        if (operation.rawMaterials) {
-          operation.rawMaterials.forEach((material) => {
+        if (rawMaterials) {
+          rawMaterials.forEach((material) => {
+            const { materialName, nodeId, ...data } = material;
             nodes.push({
-              id: material.nodeId,
-              text: material.materialName,
+              id: nodeId,
+              text: materialName,
               data: {
                 type: "material",
+                content: data,
               },
             });
 
@@ -54,7 +68,7 @@ export function formatProduct(json) {
 
         // Traverse resulting products recursively
         if (operation.products) {
-          operation.products.forEach((subProduct) => {
+          products.forEach((subProduct) => {
             // add edge from subproducts to operation
             edges.push({
               id: `${subProduct.nodeId}-${operation.nodeId}`,

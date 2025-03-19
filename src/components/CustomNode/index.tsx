@@ -4,16 +4,7 @@ import ProductNode from "./ProductNode";
 import OperationNode from "./OperationNode";
 import MaterialNode from "./MaterialNode";
 
-export interface CustomNodeData {
-  id: string;
-  text: string;
-  data: {
-    type: "product" | "operation" | "material";
-    name: string;
-  };
-}
-
-export default function CustomNode(props: NodeProps<CustomNodeData["data"]>) {
+export default function CustomNode(props: NodeProps<NodeData["data"]>) {
   switch (props.properties.data?.type) {
     case "product":
       return <ProductNode {...props} />;

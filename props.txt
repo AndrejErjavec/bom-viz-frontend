@@ -1,0 +1,1 @@
+NodeProps<T> ==> properties: NodeData<T> ==> data: T

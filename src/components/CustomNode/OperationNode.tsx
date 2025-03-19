@@ -1,21 +1,39 @@
-import type { NodeProps } from "reaflow";
+import React from "react";
+import type { NodeProps, NodeData } from "reaflow";
 import { Node } from "reaflow";
-import { CustomNodeData } from ".";
+import { CustomNodeData } from "../../types/node";
+import { useTree } from "../../context/graphContext";
 
 export default function OperationNode(
   props: NodeProps<CustomNodeData["data"]>
 ) {
+  const { node, setSelectedNode } = useTree();
+
+  const handleClick = (
+    e: React.MouseEvent<SVGGElement, MouseEvent>,
+    data: NodeData
+  ) => {
+    setSelectedNode(data);
+  };
+
   return (
     <Node
       {...props}
       label={null as any}
+      onClick={handleClick}
       style={{
         fill: "#ffffff",
         stroke: "#fbd052",
         strokeWidth: 1.5,
       }}
     >
-      <foreignObject width={props.width} height={props.height} x={0} y={0}>
+      <foreignObject
+        width={props.width}
+        height={props.height}
+        x={0}
+        y={0}
+        style={{ pointerEvents: "none" }}
+      >
         <span
           style={{
             display: "flex",

@@ -2,8 +2,9 @@ import { useState, useCallback } from "react";
 import { Canvas, CanvasPosition } from "reaflow";
 import { TransformWrapper, TransformComponent } from "react-zoom-pan-pinch";
 import CustomNode from "./components/CustomNode";
+import { GraphData } from "./types/node";
 
-const TreeChart = ({ nodes, edges }) => {
+const TreeChart = ({ nodes, edges }: GraphData) => {
   const [height, setHeight] = useState(2000);
   const [width, setWidth] = useState(2000);
 
@@ -12,7 +13,7 @@ const TreeChart = ({ nodes, edges }) => {
   };
 
   const onLayoutChange = useCallback(
-    (layout) => {
+    (layout: any) => {
       if (layout.width && layout.height) {
         const areaSize = layout.width * layout.height;
         const changeRatio = Math.abs((areaSize * 100) / (width * height) - 100);
@@ -35,11 +36,8 @@ const TreeChart = ({ nodes, edges }) => {
       <TransformComponent>
         <div
           style={{
-            height: "100vh",
-            width: "100vw",
-            dispay: "flex",
-            justifyContent: "center",
-            alignItems: "center",
+            height: "100%",
+            width: "100%",
           }}
         >
           <Canvas
@@ -56,7 +54,7 @@ const TreeChart = ({ nodes, edges }) => {
             dragNode={null}
             fit={true}
             direction="RIGHT"
-            defaultPosition={CanvasPosition.CENTER}
+            defaultPosition={CanvasPosition.LEFT}
             maxHeight={height}
             maxWidth={width}
             height={height}

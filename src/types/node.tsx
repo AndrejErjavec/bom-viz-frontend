@@ -1,5 +1,15 @@
-export interface Node {
+import { EdgeData } from "reaflow";
+
+export interface CustomNodeData {
   id: string;
   text: string;
-  type: string;
+  data: {
+    type: "product" | "operation" | "material";
+    content: string;
+  };
+}
+
+export interface GraphData {
+  nodes: CustomNodeData[];
+  edges: EdgeData[];
 }

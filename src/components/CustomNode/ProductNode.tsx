@@ -1,19 +1,37 @@
-import type { NodeProps } from "reaflow";
+import React from "react";
+import type { NodeProps, NodeData } from "reaflow";
 import { Node } from "reaflow";
-import { CustomNodeData } from ".";
+import type { CustomNodeData } from "../../types/node";
+import { useTree } from "../../context/graphContext";
 
 export default function ProductNode(props: NodeProps<CustomNodeData["data"]>) {
+  const { node, setSelectedNode } = useTree();
+
+  const handleClick = (
+    e: React.MouseEvent<SVGGElement, MouseEvent>,
+    data: NodeData
+  ) => {
+    setSelectedNode(data);
+  };
+
   return (
     <Node
       {...props}
       label={null as any}
+      onClick={handleClick}
       style={{
         fill: "#ffffff",
         stroke: "#52affb",
         strokeWidth: 1.5,
       }}
     >
-      <foreignObject width={props.width} height={props.height} x={0} y={0}>
+      <foreignObject
+        width={props.width}
+        height={props.height}
+        x={0}
+        y={0}
+        style={{ pointerEvents: "none" }}
+      >
         <span
           style={{
             display: "flex",
@@ -23,6 +41,7 @@ export default function ProductNode(props: NodeProps<CustomNodeData["data"]>) {
             height: "100%",
             fontSize: "14px",
             textAlign: "center",
+            pointerEvents: "none",
           }}
         >
           {props.properties.text}
