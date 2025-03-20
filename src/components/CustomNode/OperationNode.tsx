@@ -7,7 +7,7 @@ import { useTree } from "../../context/graphContext";
 export default function OperationNode(
   props: NodeProps<CustomNodeData["data"]>
 ) {
-  const { node, setSelectedNode } = useTree();
+  const { setSelectedNode } = useTree();
 
   const handleClick = (
     e: React.MouseEvent<SVGGElement, MouseEvent>,
@@ -23,7 +23,7 @@ export default function OperationNode(
       onClick={handleClick}
       style={{
         fill: "#ffffff",
-        stroke: "#fbd052",
+        stroke: props.properties.data?.isUnregistered ? "#7d6829" : "#fbd052",
         strokeWidth: 1.5,
       }}
     >

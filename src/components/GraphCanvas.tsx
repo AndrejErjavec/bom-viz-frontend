@@ -1,8 +1,8 @@
 import { useState, useCallback } from "react";
 import { Canvas, CanvasPosition } from "reaflow";
 import { TransformWrapper, TransformComponent } from "react-zoom-pan-pinch";
-import CustomNode from "./components/CustomNode";
-import { GraphData } from "./types/node";
+import CustomNode from "../components/CustomNode";
+import { GraphData } from "../types/node";
 
 const TreeChart = ({ nodes, edges }: GraphData) => {
   const [height, setHeight] = useState(2000);
@@ -34,34 +34,27 @@ const TreeChart = ({ nodes, edges }: GraphData) => {
       limitToBounds={false}
     >
       <TransformComponent>
-        <div
-          style={{
-            height: "100%",
-            width: "100%",
-          }}
-        >
-          <Canvas
-            nodes={nodes}
-            edges={edges}
-            node={(node) => <CustomNode {...node} />}
-            onLayoutChange={onLayoutChange}
-            layoutOptions={layoutOptions}
-            pannable={false}
-            zoomable={false}
-            animated={false}
-            readonly={true}
-            dragEdge={null}
-            dragNode={null}
-            fit={true}
-            direction="RIGHT"
-            defaultPosition={CanvasPosition.LEFT}
-            maxHeight={height}
-            maxWidth={width}
-            height={height}
-            width={width}
-            arrow={null}
-          />
-        </div>
+        <Canvas
+          nodes={nodes}
+          edges={edges}
+          node={(node) => <CustomNode {...node} />}
+          onLayoutChange={onLayoutChange}
+          layoutOptions={layoutOptions}
+          pannable={false}
+          zoomable={false}
+          animated={false}
+          readonly={true}
+          dragEdge={null}
+          dragNode={null}
+          fit={true}
+          direction="RIGHT"
+          defaultPosition={CanvasPosition.LEFT}
+          maxHeight={height}
+          maxWidth={width}
+          height={height}
+          width={width}
+          arrow={null}
+        />
       </TransformComponent>
     </TransformWrapper>
   );

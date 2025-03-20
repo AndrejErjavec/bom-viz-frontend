@@ -5,6 +5,7 @@ export interface CustomNodeData {
   text: string;
   data: {
     type: "product" | "operation" | "material";
+    isUnregistered: boolean;
     content: string;
   };
 }

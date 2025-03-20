@@ -1,14 +1,12 @@
 import { useState, useEffect } from "react";
-import { useTree } from "../context/graphContext";
 import { formatProduct } from "../util/formatting/formatReaflow";
 import type { EdgeData } from "reaflow";
 import type { CustomNodeData, GraphData } from "../types/node";
-import GraphCanvas from "../GraphCanvas";
-import ProductDetailsBar from "../ProductDetailsBar";
+import GraphCanvas from "../components/GraphCanvas";
+import ProductDetailsBar from "../components/ProductDetailsBar";
 
 export const DataView = () => {
   const [graph, setGraph] = useState<GraphData | null>(null);
-  const { selectedProduct } = useTree();
 
   useEffect(() => {
     const loadJson = async () => {
