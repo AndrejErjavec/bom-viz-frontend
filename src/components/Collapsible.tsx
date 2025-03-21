@@ -1,6 +1,6 @@
 import React from "react";
-import { Button, Box, Collapse } from "@mantine/core";
-import { ReactNode, useState } from "react";
+import { Collapse } from "@mantine/core";
+import { useState } from "react";
 import { MdKeyboardArrowDown, MdKeyboardArrowUp } from "react-icons/md";
 
 interface CollapsibleProps {

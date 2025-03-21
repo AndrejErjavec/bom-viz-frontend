@@ -53,7 +53,7 @@ export default function ProductDetailsBar() {
       }}
     >
       {/* {renderItem()} */}
-      {data && renderList(data.content, 0)}
+      {data && renderList(data.content)}
     </div>
   );
 }
