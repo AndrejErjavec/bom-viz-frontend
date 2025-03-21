@@ -7,7 +7,7 @@ export default function ProductItem({ data }: any) {
       {metadata && (
         <Collapsible text={"METADATA"} open={true}>
           {Object.keys(metadata).map((key) => (
-            <div>
+            <div className="px-5">
               {key}:{metadata[key]}
             </div>
           ))}
@@ -17,7 +17,7 @@ export default function ProductItem({ data }: any) {
       {processingInfo && (
         <Collapsible text={"PROCESSING INFO"}>
           {Object.keys(processingInfo).map((key) => (
-            <div>
+            <div className="px-5">
               {key}: {processingInfo[key]}
             </div>
           ))}

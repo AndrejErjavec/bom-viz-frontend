@@ -3,6 +3,7 @@ import { useTree } from "../../context/graphContext";
 import ProductItem from "./ProductItem";
 import MaterialItem from "./MaterialItem";
 import OperationItem from "./OperationItem";
+import Collapsible from "../Collapsible";
 
 export default function ProductDetailsBar() {
   const { selectedNode } = useTree();
@@ -30,6 +31,14 @@ export default function ProductDetailsBar() {
     }
   };
 
+  const renderList = (obj: any) => {
+    return Object.keys(obj).map((key) => {
+      const value = obj[key];
+
+      return <Collapsible text={key} content={value} />;
+    });
+  };
+
   return (
     <div
       style={{
@@ -37,14 +46,14 @@ export default function ProductDetailsBar() {
         top: 0,
         minWidth: "500px",
         height: "100vh",
-        backgroundColor: "#343434",
-        color: "#fff",
         display: "flex",
         flexDirection: "column",
         overflowY: "auto",
+        boxShadow: "0px 0 20px rgba(0, 0, 0, 0.3)", // Left shadow
       }}
     >
-      {renderItem()}
+      {/* {renderItem()} */}
+      {data && renderList(data.content, 0)}
     </div>
   );
 }

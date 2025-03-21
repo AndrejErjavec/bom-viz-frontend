@@ -7,7 +7,7 @@ export default function OperationItem({ data }: any) {
       {metadata && (
         <Collapsible text={"METADATA"} open={true}>
           {Object.keys(metadata).map((key) => (
-            <div>
+            <div className="px-5">
               {key}: {metadata[key]}
             </div>
           ))}
@@ -17,9 +17,9 @@ export default function OperationItem({ data }: any) {
       {parameters && (
         <Collapsible text={"PARAMETERS"}>
           {parameters.map((parameter: any) => (
-            <Collapsible text={parameter.parameterName}>
+            <Collapsible text={parameter.parameterName} level={1}>
               {Object.keys(parameter).map((key) => (
-                <div>
+                <div className="px-5">
                   {key}:{parameter[key]}
                 </div>
               ))}
