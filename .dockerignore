@@ -1,0 +1,10 @@
+*/node_modules/
+*/build/
+*/.git/
+.gitignore
+Dockerfile
+.docker-compose.yml
+.editorconfig
+
+# do not copy data files
+*/public/data/*
