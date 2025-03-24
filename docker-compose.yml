@@ -4,3 +4,5 @@ services:
     container_name: "product-traceability-visualization"
     ports:
       - 5173:5173
+    volumes:
+      - /opt/traceability_data:/app/data
