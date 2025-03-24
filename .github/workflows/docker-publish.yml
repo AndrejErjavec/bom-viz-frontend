@@ -21,6 +21,8 @@ jobs:
         uses: docker/metadata-action@v5
         with:
           images: ${{ env.REGISTRY }}/${{ github.repository }}
+          tags: |
+            type=raw,value=latest
 
       - name: Registry login
         uses: docker/login-action@343f7c4344506bcbf9b4de18042ae17996df046d # v3.0.0
