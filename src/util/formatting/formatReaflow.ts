@@ -43,6 +43,7 @@ function traverseProduct(product: any, nodes: any[], edges: any[]) {
     id: nodeId,
     text: productName || "NO NAME",
     data: {
+      name: productName || "NO NAME",
       type: "product",
       content: {
         metadata,
@@ -86,6 +87,7 @@ function traverseOperation(
     id: nodeId,
     text: operationName || "NO NAME",
     data: {
+      name: operationName || "NO NAME",
       type: "operation",
       isUnregistered,
       content: { metadata, parameters },
@@ -106,6 +108,7 @@ function traverseOperation(
         id: nodeId,
         text: materialName,
         data: {
+          name: materialName,
           type: "material",
           content: {
             metadata,

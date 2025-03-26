@@ -1,4 +1,3 @@
-import React from "react";
 import { Collapse } from "@mantine/core";
 import { useState } from "react";
 import { MdKeyboardArrowDown, MdKeyboardArrowUp } from "react-icons/md";
@@ -27,7 +26,12 @@ export default function Collapsible({
     return (
       <>
         {Object.keys(object).map((key: any) => (
-          <div className={`px-${(level + 1) * 5}`}>
+          <div
+            style={{
+              paddingLeft: `calc(0.25rem * ${(level + 1) * 5})`,
+            }}
+            key={key}
+          >
             {key}: {content[key]}
           </div>
         ))}
@@ -38,7 +42,12 @@ export default function Collapsible({
   const renderArray = (array: any[]) => {
     return array.map((obj: any) => {
       return (
-        <Collapsible text={obj.parameterName} content={obj} level={level + 1} />
+        <Collapsible
+          text={obj.parameterName}
+          content={obj}
+          level={level + 1}
+          key={obj.parameterName}
+        />
       );
     });
   };
@@ -56,9 +65,10 @@ export default function Collapsible({
   return (
     <div>
       <button
-        className={`flex flex-row items-center w-full text-left py-1 bg-gray-200 px-${
-          level * 5
-        }`}
+        className="flex flex-row gap-1 items-center w-full text-left py-1.5 bg-gray-100 border-b border-gray-300 cursor-pointer"
+        style={{
+          paddingLeft: `calc(0.25rem * ${level * 5} + 10px)`,
+        }}
         onClick={toggle}
       >
         <div>
@@ -68,7 +78,7 @@ export default function Collapsible({
             <MdKeyboardArrowDown></MdKeyboardArrowDown>
           )}
         </div>
-        {text}
+        <span className="font-medium">{text}</span>
       </button>
       <Collapse in={isOpen}>{renderItem()}</Collapse>
     </div>

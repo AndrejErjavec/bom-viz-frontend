@@ -3,7 +3,7 @@ import { formatProduct } from "../util/formatting/formatReaflow";
 import type { EdgeData } from "reaflow";
 import type { CustomNodeData, GraphData } from "../types/node";
 import GraphCanvas from "../components/GraphCanvas";
-import ProductDetailsBar from "../components/ProductDetailsBar";
+import DetailsBar from "../components/DetailsBar";
 
 export const DataView = () => {
   const [graph, setGraph] = useState<GraphData | null>(null);
@@ -24,19 +24,12 @@ export const DataView = () => {
   }, []);
 
   return (
-    <main
-      style={{
-        display: "flex",
-        flexDirection: "row",
-        width: "100%",
-        height: "100vh",
-      }}
-    >
+    <main>
       {graph && (
-        <>
+        <div className="flex flex-row">
           <GraphCanvas nodes={graph.nodes} edges={graph.edges}></GraphCanvas>
-          <ProductDetailsBar />
-        </>
+          <DetailsBar />
+        </div>
       )}
     </main>
   );

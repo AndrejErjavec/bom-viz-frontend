@@ -1,14 +1,12 @@
 import "./App.css";
 import { DataView } from "./pages/DataView";
-
-import "@mantine/core/styles.css";
-import { MantineProvider } from "@mantine/core";
+import { Route, Routes } from "react-router";
 
 function App() {
   return (
-    <MantineProvider>
-      <DataView />;
-    </MantineProvider>
+    <Routes>
+      <Route path="/" element={<DataView />} />
+    </Routes>
   );
 }
 

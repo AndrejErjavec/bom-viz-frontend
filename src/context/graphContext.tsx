@@ -1,4 +1,10 @@
-import { createContext, useContext, useState, ReactNode } from "react";
+import {
+  createContext,
+  useContext,
+  useState,
+  ReactNode,
+  useEffect,
+} from "react";
 
 interface TreeContextType {
   selectedNode: any; // Change 'any' to a more specific type if known
@@ -12,7 +18,11 @@ interface TreeProviderProps {
 }
 
 export const TreeProvider: React.FC<TreeProviderProps> = ({ children }) => {
-  const [selectedNode, setSelectedNode] = useState<any>(null); // Change 'any' to a more specific type if possible
+  const [selectedNode, setSelectedNode] = useState<any>(null);
+
+  useEffect(() => {
+    console.log(selectedNode);
+  }, []);
 
   return (
     <TreeContext.Provider value={{ selectedNode, setSelectedNode }}>
