@@ -13,8 +13,10 @@ export const DataView = () => {
       try {
         const response = await fetch("/data/nested.json");
         const json = await response.json();
-        const { nodes, edges }: { nodes: CustomNodeData[]; edges: EdgeData[] } =
+        // console.log(json);
+        let { nodes, edges }: { nodes: CustomNodeData[]; edges: EdgeData[] } =
           formatProduct(json);
+        nodes = setNodeSize(nodes);
         setGraph({ nodes, edges });
       } catch (error) {
         console.error("Error loading JSON:", error);
@@ -22,6 +24,14 @@ export const DataView = () => {
     };
     loadJson();
   }, []);
+
+  const setNodeSize = (nodes: CustomNodeData[]) => {
+    return nodes.map((node) => ({
+      ...node,
+      width: 300,
+      height: 85,
+    }));
+  };
 
   return (
     <main>

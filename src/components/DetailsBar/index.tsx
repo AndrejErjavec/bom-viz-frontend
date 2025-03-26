@@ -17,10 +17,17 @@ export default function DetailsBar() {
   }, [selectedNode]);
 
   const renderList = (obj: any) => {
-    return Object.keys(obj).map((key) => {
+    return Object.keys(obj).map((key, index) => {
       const value = obj[key];
 
-      return <Collapsible text={key} content={value} key={key} />;
+      return (
+        <Collapsible
+          text={key}
+          content={value}
+          key={`${key}-${index}`}
+          open={key === "metadata"}
+        />
+      );
     });
   };
 
@@ -31,40 +38,37 @@ export default function DetailsBar() {
   return (
     <div
       className={clsx(
-        "fixed top-0 right-0 h-screen z-50 flex items-start transform transition-transform duration-300 ease-in-out",
+        "fixed top-0 right-0 h-screen w-96 z-50 flex flex-col transform transition-transform duration-300 ease-in-out bg-white shadow-2xl",
         {
           "translate-x-0": isOpen,
           "translate-x-110": !isOpen,
         }
       )}
+      role="dialog"
+      aria-modal="true"
     >
-      {/* Sidebar container */}
-      <div
-        className="relative w-96 h-full bg-white shadow-2xl"
-        role="dialog"
-        aria-modal="true"
+      {/* Close Button */}
+      <button
+        className="absolute top-2 -left-10 w-8 h-8 rounded-full bg-gray-200 cursor-pointer shadow-md flex items-center justify-center"
+        onClick={handleClose}
+        aria-label="Close sidebar"
       >
-        {/* Close Button */}
-        <button
-          className="absolute top-2 -left-10 w-8 h-8 rounded-full bg-gray-200 cursor-pointer shadow-md flex items-center justify-center transform transition-transform duration-300 ease-in-out"
-          onClick={handleClose}
-          aria-label="Close sidebar"
-        >
-          ×
-        </button>
+        ×
+      </button>
 
-        {/* Sidebar content */}
-        {data && (
-          <>
-            <div className="px-4 py-3 bg-gray-200 border-b border-gray-300 text-lg font-semibold">
-              {data.name}
-            </div>
-            <div className="overflow-y-auto h-full">
-              {renderList(data.content)}
-            </div>
-          </>
-        )}
-      </div>
+      {data && (
+        <>
+          {/* Header */}
+          <div className="px-4 py-3 bg-gray-200 border-b border-gray-300 text-lg font-semibold">
+            {data.name}
+          </div>
+
+          {/* Scrollable content */}
+          <div className="overflow-y-auto w-full">
+            {renderList(data.content)}
+          </div>
+        </>
+      )}
     </div>
   );
 }

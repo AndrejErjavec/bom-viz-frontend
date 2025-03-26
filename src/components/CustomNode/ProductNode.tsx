@@ -1,11 +1,12 @@
 import React from "react";
-import type { NodeProps, NodeData } from "reaflow";
+import type { NodeData, NodeProps } from "reaflow";
 import { Node } from "reaflow";
 import type { CustomNodeData } from "../../types/node";
 import { useTree } from "../../context/graphContext";
+import { BsBoxFill } from "react-icons/bs";
 
 export default function ProductNode(props: NodeProps<CustomNodeData["data"]>) {
-  const { node, setSelectedNode } = useTree();
+  const { setSelectedNode } = useTree();
 
   const handleClick = (
     e: React.MouseEvent<SVGGElement, MouseEvent>,
@@ -32,20 +33,14 @@ export default function ProductNode(props: NodeProps<CustomNodeData["data"]>) {
         y={0}
         style={{ pointerEvents: "none" }}
       >
-        <span
-          style={{
-            display: "flex",
-            justifyContent: "center",
-            alignItems: "center",
-            width: "100%",
-            height: "100%",
-            fontSize: "14px",
-            textAlign: "center",
-            pointerEvents: "none",
-          }}
-        >
-          {props.properties.text}
-        </span>
+        <div className="fixed flex justify-start items-center w-full h-full">
+          <div className="h-full px-3 flex items-center justify-center bg-[#52affb]">
+            <BsBoxFill size={18} color="white" />
+          </div>
+          <span className="px-2 py-2 text-center flex-1">
+            {props.properties.text}
+          </span>
+        </div>
       </foreignObject>
     </Node>
   );

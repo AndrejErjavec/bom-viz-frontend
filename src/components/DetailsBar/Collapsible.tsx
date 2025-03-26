@@ -13,11 +13,12 @@ export default function Collapsible({
   text,
   content,
   level = 0,
-  open,
+  open = false,
 }: CollapsibleProps) {
   // const [opened, { toggle }] = useDisclosure(false);
 
-  const [isOpen, setIsOpen] = useState(() => (open != null ? open : false));
+  const [isOpen, setIsOpen] = useState(open);
+
   const toggle = () => {
     setIsOpen((open) => !open);
   };
@@ -25,12 +26,12 @@ export default function Collapsible({
   const renderObject = (object: any) => {
     return (
       <>
-        {Object.keys(object).map((key: any) => (
+        {Object.keys(object).map((key: any, index: number) => (
           <div
             style={{
               paddingLeft: `calc(0.25rem * ${(level + 1) * 5})`,
             }}
-            key={key}
+            key={`${key}-${index}`}
           >
             {key}: {content[key]}
           </div>
@@ -40,13 +41,13 @@ export default function Collapsible({
   };
 
   const renderArray = (array: any[]) => {
-    return array.map((obj: any) => {
+    return array.map((obj: any, index: number) => {
       return (
         <Collapsible
           text={obj.parameterName}
           content={obj}
           level={level + 1}
-          key={obj.parameterName}
+          key={`${obj.parameterName}-${index}`}
         />
       );
     });

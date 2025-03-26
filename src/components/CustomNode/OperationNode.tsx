@@ -3,6 +3,7 @@ import type { NodeProps, NodeData } from "reaflow";
 import { Node } from "reaflow";
 import { CustomNodeData } from "../../types/node";
 import { useTree } from "../../context/graphContext";
+import { FaGear } from "react-icons/fa6";
 
 export default function OperationNode(
   props: NodeProps<CustomNodeData["data"]>
@@ -23,7 +24,7 @@ export default function OperationNode(
       onClick={handleClick}
       style={{
         fill: "#ffffff",
-        stroke: props.properties.data?.isUnregistered ? "#7d6829" : "#fbd052",
+        stroke: props.properties.data?.isUnregistered ? "#ae913b" : "#fbd052",
         strokeWidth: 1.5,
       }}
     >
@@ -34,19 +35,21 @@ export default function OperationNode(
         y={0}
         style={{ pointerEvents: "none" }}
       >
-        <span
-          style={{
-            display: "flex",
-            justifyContent: "center",
-            alignItems: "center",
-            width: "100%",
-            height: "100%",
-            fontSize: "14px",
-            textAlign: "center",
-          }}
-        >
-          {props.properties.text}
-        </span>
+        <div className="fixed flex justify-start items-center w-full h-full">
+          <div
+            className="h-full px-3 flex items-center justify-center"
+            style={{
+              backgroundColor: `${
+                props.properties.data?.isUnregistered ? "#ae913b" : "#fbd052"
+              }`,
+            }}
+          >
+            <FaGear size={18} color="white" />
+          </div>
+          <span className="px-2 py-2 text-center flex-1">
+            {props.properties.text}
+          </span>
+        </div>
       </foreignObject>
     </Node>
   );

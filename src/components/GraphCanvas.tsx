@@ -46,7 +46,7 @@ const GraphCanvas = ({ nodes, edges }: GraphData) => {
           readonly={true}
           dragEdge={null}
           dragNode={null}
-          fit={false}
+          fit={true}
           direction="RIGHT"
           defaultPosition={CanvasPosition.LEFT}
           arrow={null}

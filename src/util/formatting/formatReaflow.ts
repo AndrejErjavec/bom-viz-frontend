@@ -47,7 +47,7 @@ function traverseProduct(product: any, nodes: any[], edges: any[]) {
       type: "product",
       content: {
         metadata,
-        processingInfo,
+        ...(processingInfo ? { processingInfo } : {}),
       },
     },
   });
