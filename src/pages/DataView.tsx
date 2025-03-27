@@ -2,8 +2,8 @@ import { useState, useEffect } from "react";
 import { formatProduct } from "../util/formatting/formatReaflow";
 import type { EdgeData } from "reaflow";
 import type { CustomNodeData, GraphData } from "../types/node";
-import GraphCanvas from "../components/GraphCanvas";
 import DetailsBar from "../components/DetailsBar";
+import { GraphView } from "../components/GraphView";
 
 export const DataView = () => {
   const [graph, setGraph] = useState<GraphData | null>(null);
@@ -37,7 +37,7 @@ export const DataView = () => {
     <main>
       {graph && (
         <div className="flex flex-row">
-          <GraphCanvas nodes={graph.nodes} edges={graph.edges}></GraphCanvas>
+          <GraphView nodes={graph.nodes} edges={graph.edges} />
           <DetailsBar />
         </div>
       )}

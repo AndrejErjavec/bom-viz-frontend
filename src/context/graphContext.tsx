@@ -5,10 +5,14 @@ import {
   ReactNode,
   useEffect,
 } from "react";
+import { ViewPort } from "react-zoomable-ui/dist/ViewPort";
 
 interface TreeContextType {
-  selectedNode: any; // Change 'any' to a more specific type if known
+  selectedNode: any;
   setSelectedNode: (node: any) => void;
+  viewPort: ViewPort | null;
+  setViewPort: (viewPort: ViewPort) => void;
+  centerView: () => void;
 }
 
 const TreeContext = createContext<TreeContextType | undefined>(undefined);
@@ -19,13 +23,27 @@ interface TreeProviderProps {
 
 export const TreeProvider: React.FC<TreeProviderProps> = ({ children }) => {
   const [selectedNode, setSelectedNode] = useState<any>(null);
+  const [viewPort, setViewPort] = useState<ViewPort | null>(null);
 
-  useEffect(() => {
-    console.log(selectedNode);
-  }, []);
+  const centerView = () => {
+    viewPort?.updateContainerSize();
+
+    const canvas = document.querySelector(".canvas") as HTMLElement | null;
+    if (canvas) {
+      viewPort?.camera?.centerFitElementIntoView(canvas);
+    }
+  };
 
   return (
-    <TreeContext.Provider value={{ selectedNode, setSelectedNode }}>
+    <TreeContext.Provider
+      value={{
+        selectedNode,
+        setSelectedNode,
+        viewPort,
+        setViewPort,
+        centerView,
+      }}
+    >
       {children}
     </TreeContext.Provider>
   );

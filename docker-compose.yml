@@ -1,7 +1,7 @@
 services:
   app:
     image: ghcr.io/andrejerjavec/product-traceability-visualization:latest
-    container_name: "product-traceability-visualization"
+    container_name: "traceability-viz"
     ports:
       - 5173:5173
     volumes:
