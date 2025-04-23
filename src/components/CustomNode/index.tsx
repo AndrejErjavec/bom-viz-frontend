@@ -1,41 +1,18 @@
+import type { NodeProps } from "reaflow";
 import ProductNode from "./ProductNode";
 import OperationNode from "./OperationNode";
 import MaterialNode from "./MaterialNode";
-import type { CustomNodeData } from "../../types/node";
-import { NodeProps } from "reaflow";
+import { CustomNodeData } from "../../types/node";
 
-export interface NodeProps213 {
-  node: NodeProps<CustomNodeData>;
-  updateCurrentNode: (nodeData: CustomNodeData) => void;
-}
-
-export default function CustomNode(props: NodeProps213) {
-  const nodeData = props.node.properties.data;
-
-  console.log(props.node);
-
-  switch (nodeData?.data?.type) {
+export default function CustomNode(props: NodeProps<CustomNodeData["data"]>) {
+  const nodeData = props.properties.data;
+  switch (nodeData?.type) {
     case "product":
-      return (
-        <ProductNode
-          node={props.node}
-          updateCurrentNode={props.updateCurrentNode}
-        />
-      );
+      return <ProductNode {...props} />;
     case "operation":
-      return (
-        <OperationNode
-          node={props.node}
-          updateCurrentNode={props.updateCurrentNode}
-        />
-      );
+      return <OperationNode {...props} />;
     case "material":
-      return (
-        <MaterialNode
-          node={props.node}
-          updateCurrentNode={props.updateCurrentNode}
-        />
-      );
+      return <MaterialNode {...props} />;
     default:
       return null;
   }

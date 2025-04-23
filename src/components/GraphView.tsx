@@ -67,9 +67,7 @@ const GraphCanvas = () => {
     <Canvas
       className="canvas"
       onLayoutChange={onLayoutChange}
-      node={(p) => (
-        <CustomNode node={p} updateCurrentNode={updateCurrentNode} />
-      )}
+      node={(p) => <CustomNode {...p} />}
       nodes={graph?.nodes}
       edges={graph?.edges}
       arrow={null}

@@ -1,23 +1,23 @@
 import React from "react";
+import type { NodeData, NodeProps } from "reaflow";
 import { Node } from "reaflow";
 import type { CustomNodeData } from "../../types/node";
 import { useTree } from "../../context/graphContext";
 import { BsBoxFill } from "react-icons/bs";
-import { NodeProps213 } from ".";
 
-export default function ProductNode({ node, updateCurrentNode }: NodeProps213) {
+export default function ProductNode(props: NodeProps<CustomNodeData["data"]>) {
   const { setSelectedNode } = useTree();
 
   const handleClick = (
     e: React.MouseEvent<SVGGElement, MouseEvent>,
-    data: CustomNodeData
+    data: NodeData
   ) => {
     setSelectedNode(data);
   };
 
   return (
     <Node
-      {...node}
+      {...props}
       label={null as any}
       onClick={handleClick}
       style={{
@@ -27,8 +27,8 @@ export default function ProductNode({ node, updateCurrentNode }: NodeProps213) {
       }}
     >
       <foreignObject
-        width={node.width}
-        height={node.height}
+        width={props.width}
+        height={props.height}
         x={0}
         y={0}
         style={{ pointerEvents: "none" }}
@@ -38,7 +38,7 @@ export default function ProductNode({ node, updateCurrentNode }: NodeProps213) {
             <BsBoxFill size={18} color="white" />
           </div>
           <span className="px-2 py-2 text-center flex-1">
-            {node.properties.text}
+            {props.properties.text}
           </span>
         </div>
       </foreignObject>
