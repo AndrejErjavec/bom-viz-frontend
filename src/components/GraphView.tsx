@@ -1,22 +1,22 @@
-import React, { useState } from "react";
-import styled from "styled-components";
+import React from "react";
 import debounce from "lodash.debounce";
-import { Space, ViewPort } from "react-zoomable-ui";
+import { Space } from "react-zoomable-ui";
 import { Canvas } from "reaflow";
 import type { ElkRoot } from "reaflow";
-import { GraphData } from "../types/node";
+import { CustomNodeData } from "../types/node";
 import CustomNode from "./CustomNode";
 import { useTree } from "../context/graphContext";
+import { cloneDeep } from "lodash";
 
 const layoutOptions = {
   // "elk.layered.compaction.postCompaction.strategy": "EDGE_LENGTH",
   "elk.layered.nodePlacement.strategy": "NETWORK_SIMPLEX",
 };
 
-const GraphCanvas = ({ nodes, edges }: GraphData) => {
+const GraphCanvas = () => {
   const [paneWidth, setPaneWidth] = React.useState(2000);
   const [paneHeight, setPaneHeight] = React.useState(2000);
-  const { centerView } = useTree();
+  const { graph, setGraph, centerView } = useTree();
 
   const onLayoutChange = React.useCallback(
     (layout: ElkRoot) => {
@@ -41,13 +41,37 @@ const GraphCanvas = ({ nodes, edges }: GraphData) => {
     [paneHeight, paneWidth, centerView]
   );
 
+  const updateCurrentNode = (nodeData: CustomNodeData): void => {
+    const id = nodeData.id;
+    console.log("Updating current node with", nodeData);
+    const nodeToUpdateIndex = graph!.nodes.findIndex(
+      (node: CustomNodeData) => node.id === id
+    );
+    console.log("updateCurrentNode nodeToUpdateIndex", nodeToUpdateIndex);
+    const nodeToUpdate = {
+      ...graph?.nodes[nodeToUpdateIndex],
+      ...nodeData,
+      id, // Force keep same id to avoid edge cases
+    };
+    console.log("updateCurrentNode updated node", nodeToUpdate);
+
+    const newNodes = cloneDeep(graph!.nodes);
+    newNodes[nodeToUpdateIndex] = nodeToUpdate;
+    console.log("updateCurrentNode new nodes", newNodes);
+
+    const edges = graph!.edges;
+    setGraph({ nodes: newNodes, edges });
+  };
+
   return (
     <Canvas
       className="canvas"
       onLayoutChange={onLayoutChange}
-      node={(p) => <CustomNode {...p} />}
-      nodes={nodes}
-      edges={edges}
+      node={(p) => (
+        <CustomNode node={p} updateCurrentNode={updateCurrentNode} />
+      )}
+      nodes={graph?.nodes}
+      edges={graph?.edges}
       arrow={null}
       maxHeight={paneHeight}
       maxWidth={paneWidth}
@@ -67,7 +91,7 @@ const GraphCanvas = ({ nodes, edges }: GraphData) => {
   );
 };
 
-export const GraphView = ({ nodes, edges }: GraphData) => {
+export const GraphView = () => {
   const { viewPort, setViewPort } = useTree();
 
   const blurOnClick = React.useCallback(() => {
@@ -93,7 +117,7 @@ export const GraphView = ({ nodes, edges }: GraphData) => {
         pollForElementResizing
         className="space"
       >
-        <GraphCanvas nodes={nodes} edges={edges} />
+        <GraphCanvas />
       </Space>
     </div>
   );

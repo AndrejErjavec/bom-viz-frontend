@@ -8,13 +8,13 @@ export default function DetailsBar() {
   const [data, setData] = useState<any>(null);
   const [isOpen, setIsOpen] = useState(false);
 
-  useEffect(() => {
-    if (selectedNode) {
-      setData(selectedNode.data);
-      setIsOpen(true);
-      console.log(selectedNode.data);
-    }
-  }, [selectedNode]);
+  // useEffect(() => {
+  //   if (selectedNode) {
+  //     setData(selectedNode.data);
+  //     setIsOpen(true);
+  //     console.log(selectedNode.data);
+  //   }
+  // }, [selectedNode]);
 
   const renderList = (obj: any) => {
     return Object.keys(obj).map((key, index) => {

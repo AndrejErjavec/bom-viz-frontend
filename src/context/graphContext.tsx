@@ -1,13 +1,10 @@
-import {
-  createContext,
-  useContext,
-  useState,
-  ReactNode,
-  useEffect,
-} from "react";
+import { createContext, useContext, useState, ReactNode } from "react";
 import { ViewPort } from "react-zoomable-ui/dist/ViewPort";
+import { GraphData } from "../types/node";
 
 interface TreeContextType {
+  graph: GraphData | null;
+  setGraph: ({ nodes, edges }: GraphData) => void;
   selectedNode: any;
   setSelectedNode: (node: any) => void;
   viewPort: ViewPort | null;
@@ -22,6 +19,7 @@ interface TreeProviderProps {
 }
 
 export const TreeProvider: React.FC<TreeProviderProps> = ({ children }) => {
+  const [graph, setGraph] = useState<GraphData | null>(null);
   const [selectedNode, setSelectedNode] = useState<any>(null);
   const [viewPort, setViewPort] = useState<ViewPort | null>(null);
 
@@ -37,6 +35,8 @@ export const TreeProvider: React.FC<TreeProviderProps> = ({ children }) => {
   return (
     <TreeContext.Provider
       value={{
+        graph,
+        setGraph,
         selectedNode,
         setSelectedNode,
         viewPort,
