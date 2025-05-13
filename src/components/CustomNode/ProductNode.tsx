@@ -4,8 +4,9 @@ import { Node } from "reaflow";
 import type { CustomNodeData } from "../../types/node";
 import { useTree } from "../../context/graphContext";
 import { BsBoxFill } from "react-icons/bs";
+import { Props } from ".";
 
-export default function ProductNode(props: NodeProps<CustomNodeData["data"]>) {
+export default function ProductNode({ node, updateCurrentNode }: Props) {
   const { setSelectedNode } = useTree();
 
   const handleClick = (
@@ -17,7 +18,7 @@ export default function ProductNode(props: NodeProps<CustomNodeData["data"]>) {
 
   return (
     <Node
-      {...props}
+      {...node}
       label={null as any}
       onClick={handleClick}
       style={{
@@ -27,8 +28,8 @@ export default function ProductNode(props: NodeProps<CustomNodeData["data"]>) {
       }}
     >
       <foreignObject
-        width={props.width}
-        height={props.height}
+        width={node.width}
+        height={node.height}
         x={0}
         y={0}
         style={{ pointerEvents: "none" }}
@@ -38,7 +39,7 @@ export default function ProductNode(props: NodeProps<CustomNodeData["data"]>) {
             <BsBoxFill size={18} color="white" />
           </div>
           <span className="px-2 py-2 text-center flex-1">
-            {props.properties.text}
+            {node.properties.text}
           </span>
         </div>
       </foreignObject>

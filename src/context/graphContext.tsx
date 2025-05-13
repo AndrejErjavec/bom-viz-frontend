@@ -1,15 +1,25 @@
-import { createContext, useContext, useState, ReactNode } from "react";
+import {
+  createContext,
+  useContext,
+  useState,
+  ReactNode,
+  useEffect,
+} from "react";
 import { ViewPort } from "react-zoomable-ui/dist/ViewPort";
-import { GraphData } from "../types/node";
+import { CustomNodeData, GraphData } from "../types/node";
 
 interface TreeContextType {
   graph: GraphData | null;
   setGraph: ({ nodes, edges }: GraphData) => void;
-  selectedNode: any;
-  setSelectedNode: (node: any) => void;
+  selectedNode: CustomNodeData;
+  setSelectedNode: (node: CustomNodeData) => void;
   viewPort: ViewPort | null;
   setViewPort: (viewPort: ViewPort) => void;
   centerView: () => void;
+  isSearchView: boolean;
+  setIsSearchView: (isSearchView: boolean) => void;
+  isLoading: boolean;
+  setIsLoading: (isLoading: boolean) => void;
 }
 
 const TreeContext = createContext<TreeContextType | undefined>(undefined);
@@ -22,6 +32,12 @@ export const TreeProvider: React.FC<TreeProviderProps> = ({ children }) => {
   const [graph, setGraph] = useState<GraphData | null>(null);
   const [selectedNode, setSelectedNode] = useState<any>(null);
   const [viewPort, setViewPort] = useState<ViewPort | null>(null);
+  const [isSearchView, setIsSearchView] = useState<boolean>(false);
+  const [isLoading, setIsLoading] = useState<boolean>(true);
+
+  useEffect(() => {
+    console.log("Loading:", isLoading);
+  }, [isLoading]);
 
   const centerView = () => {
     viewPort?.updateContainerSize();
@@ -42,6 +58,10 @@ export const TreeProvider: React.FC<TreeProviderProps> = ({ children }) => {
         viewPort,
         setViewPort,
         centerView,
+        isSearchView,
+        setIsSearchView,
+        isLoading,
+        setIsLoading,
       }}
     >
       {children}

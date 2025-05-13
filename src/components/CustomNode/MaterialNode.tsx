@@ -1,11 +1,11 @@
 import React from "react";
 import type { NodeProps, NodeData } from "reaflow";
 import { Node } from "reaflow";
-import { CustomNodeData } from "../../types/node";
 import { useTree } from "../../context/graphContext";
 import { GiStoneBlock } from "react-icons/gi";
+import { Props } from ".";
 
-export default function MaterialNode(props: NodeProps<CustomNodeData["data"]>) {
+export default function MaterialNode({ node, updateCurrentNode }: Props) {
   const { setSelectedNode } = useTree();
 
   const handleClick = (
@@ -14,9 +14,10 @@ export default function MaterialNode(props: NodeProps<CustomNodeData["data"]>) {
   ) => {
     setSelectedNode(data);
   };
+
   return (
     <Node
-      {...props}
+      {...node}
       label={null as any}
       onClick={handleClick}
       style={{
@@ -26,8 +27,8 @@ export default function MaterialNode(props: NodeProps<CustomNodeData["data"]>) {
       }}
     >
       <foreignObject
-        width={props.width}
-        height={props.height}
+        width={node.width}
+        height={node.height}
         x={0}
         y={0}
         style={{ pointerEvents: "none" }}
@@ -37,7 +38,7 @@ export default function MaterialNode(props: NodeProps<CustomNodeData["data"]>) {
             <GiStoneBlock size={18} color="white" />
           </div>
           <span className="px-2 py-2 text-center flex-1">
-            {props.properties.text}
+            {node.properties.text}
           </span>
         </span>
       </foreignObject>
