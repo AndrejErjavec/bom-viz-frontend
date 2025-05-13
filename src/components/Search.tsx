@@ -15,10 +15,11 @@ export default function Search({ placeholder, onSubmit }: SearchProps) {
   const handleSubmit = (e: FormEvent<HTMLFormElement>) => {
     e.preventDefault();
     onSubmit(search);
+    setSearch("");
   };
 
   return (
-    <div className="absolute top-3 left-3 z-50 min-w-3xl">
+    <div className="min-w-3xl">
       <form onSubmit={handleSubmit}>
         <div className="flex flex-row gap-2">
           <input

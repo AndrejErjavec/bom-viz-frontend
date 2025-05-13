@@ -1,40 +1,49 @@
 import ProductNode from "./ProductNode";
 import OperationNode from "./OperationNode";
 import MaterialNode from "./MaterialNode";
-import type { CustomNodeData } from "../../types/node";
+import type { CustomNodeData, CustomNodeExtraData } from "../../types/node";
 import { NodeProps } from "reaflow";
+import { cloneDeep } from "lodash";
+import { useTree } from "../../context/graphContext";
 
-export interface NodeProps213 {
-  node: NodeProps<CustomNodeData>;
-  updateCurrentNode: (nodeData: CustomNodeData) => void;
+export interface Props {
+  node: NodeProps<CustomNodeExtraData>;
+  updateCurrentNode: (data: Partial<CustomNodeData>) => void;
 }
 
-export default function CustomNode(props: NodeProps213) {
-  const nodeData = props.node.properties.data;
+export default function CustomNode(props: NodeProps) {
+  const { setSelectedNode, graph, setGraph } = useTree();
 
-  console.log(props.node);
+  const id = props.properties.id;
 
-  switch (nodeData?.data?.type) {
+  // from: https://codesandbox.io/p/sandbox/poc-nextjs-reaflow-flblp?file=%2Fsrc%2Fcomponents%2Feditor%2FCanvasContainer.tsx%3A65%2C22
+  const updateCurrentNode = (nodeData: Partial<CustomNodeData>): void => {
+    const nodeToUpdateIndex = graph!.nodes.findIndex(
+      (node: CustomNodeData) => node.id === id
+    );
+    const nodeToUpdate = {
+      ...graph?.nodes[nodeToUpdateIndex],
+      ...nodeData,
+      id, // Force keep same id to avoid edge cases
+    };
+
+    const newNodes = cloneDeep(graph!.nodes);
+    newNodes[nodeToUpdateIndex] = nodeToUpdate;
+
+    const edges = graph!.edges;
+    setGraph({ nodes: newNodes, edges });
+  };
+
+  switch (props.properties.data?.type) {
     case "product":
-      return (
-        <ProductNode
-          node={props.node}
-          updateCurrentNode={props.updateCurrentNode}
-        />
-      );
+      return <ProductNode node={props} updateCurrentNode={updateCurrentNode} />;
     case "operation":
       return (
-        <OperationNode
-          node={props.node}
-          updateCurrentNode={props.updateCurrentNode}
-        />
+        <OperationNode node={props} updateCurrentNode={updateCurrentNode} />
       );
     case "material":
       return (
-        <MaterialNode
-          node={props.node}
-          updateCurrentNode={props.updateCurrentNode}
-        />
+        <MaterialNode node={props} updateCurrentNode={updateCurrentNode} />
       );
     default:
       return null;

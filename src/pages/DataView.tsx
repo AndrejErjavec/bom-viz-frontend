@@ -5,97 +5,84 @@ import type { CustomNodeData, GraphData } from "../types/node";
 import DetailsBar from "../components/DetailsBar";
 import { GraphView } from "../components/GraphView";
 import Search from "../components/Search";
-import calculateNodeSize from "../util/calculateNodeSize";
-import cloneDeep from "lodash.clonedeep";
 import { useTree } from "../context/graphContext";
+import { LoadingOverlay } from "@mantine/core";
+import { useParams, useNavigate } from "react-router";
+import { useMutation, useQuery } from "@tanstack/react-query";
+import setNodeSize from "../util/setNodeSize";
+import ProductSearch from "../components/ProductSearch";
 
 export const DataView = () => {
-  const { graph, setGraph } = useTree();
-  const [loading, setLoading] = useState(false);
+  const {
+    graph,
+    setGraph,
+    isSearchView,
+    setIsSearchView,
+    isLoading,
+    setIsLoading,
+  } = useTree();
 
-  const productNumber = 1120799;
+  // const productNumber = 1120799;
+  const { productNumber } = useParams();
+
+  const fetchData = async () => {
+    const response = await fetch(
+      `http://localhost:8080/traceability_viz_backend/api/product?productNumber=${productNumber}`
+    );
+    if (!response.ok) {
+      const responseJson = await response.json();
+      throw new Error(responseJson.message);
+    }
+    return response.json();
+  };
+
+  const { data, isPending, isError, error } = useQuery({
+    queryKey: ["graphData"],
+    queryFn: () => fetchData(),
+    retry: false,
+  });
+
+  useEffect(() => {}, [isError]);
 
   useEffect(() => {
-    const fetchData = async () => {
-      setLoading(true);
-      const response = await fetch(
-        `http://localhost:8080/traceability_viz_backend/api/product?productNumber=${1120799}`
-      );
-      const json = await response.json();
+    if (data) {
       let { nodes, edges }: { nodes: CustomNodeData[]; edges: EdgeData[] } =
-        formatProduct(json);
+        formatProduct(data);
       nodes = setNodeSize(nodes);
       setGraph({ nodes, edges });
-      setGraph({ nodes, edges });
-      setLoading(false);
-    };
-    fetchData();
-  }, []);
+    }
+  }, [data]);
 
-  const handleSearch = (e: React.FormEvent<any>) => {
-    e.preventDefault();
-  };
+  const productName = graph?.nodes[0].text;
 
-  const setNodeSize = (nodes: CustomNodeData[]) => {
-    // return nodes.map((node) => {
-    //   const { width, height } = calculateNodeSize(node, true);
-    //   console.log(width, height);
-    //   return {
-    //     ...node,
-    //     width: width,
-    //     height: height,
-    //   };
-    // });
-    return nodes.map((node) => ({
-      ...node,
-      width: 300,
-      height: 85,
-    }));
-  };
-
-  const handleSubmit = async (query: string) => {
-    const response = await fetch(
-      `http://localhost:8080/traceability_viz_backend/api/product/search?productNumber=${productNumber}&prompt=${query}`
+  if (error) {
+    return (
+      <div className="flex w-full h-screen justify-center items-center bg-white text-xl">
+        {error.message}
+      </div>
     );
-    const json = await response.json();
-    let { nodes, edges }: { nodes: CustomNodeData[]; edges: EdgeData[] } =
-      formatProduct(json);
-    nodes = setNodeSize(nodes);
-    setGraph({ nodes, edges });
-    setGraph({ nodes, edges });
-  };
-
-  // if (loading) {
-  //   return (
-  //     <div className="w-full h-screen flex justify-center items-center">
-  //       nalaganje
-  //     </div>
-  //   );
-  // }
+  }
 
   return (
-    <main>
-      <Search placeholder={"Kaj želite poiskati?"} onSubmit={handleSubmit} />
-      {graph && (
-        <div className="flex flex-row">
-          <GraphView />
-          <DetailsBar />
+    <>
+      {/* <LoadingOverlay visible={isLoading} /> */}
+      {isLoading && (
+        <div className="fixed w-full h-screen flex justify-center items-center bg-white text-xl z-50">
+          nalaganje...
         </div>
       )}
-    </main>
+      <main>
+        <div className="absolute top-3 left-3 z-40">
+          <div className="text-2xl">{productName}</div>
+          <ProductSearch />
+        </div>
+        {graph && (
+          <div className="flex flex-row">
+            <GraphView />
+            <DetailsBar />
+          </div>
+        )}
+      </main>
+    </>
   );
 };
-
-// const loadJson = async () => {
-//   try {
-//     const response = await fetch("/data/nested.json");
-//     const json = await response.json();
-//     // console.log(json);
-//     let { nodes, edges }: { nodes: CustomNodeData[]; edges: EdgeData[] } =
-//       formatProduct(json);
-//     nodes = setNodeSize(nodes);
-//     setGraph({ nodes, edges });
-//   } catch (error) {
-//     console.error("Error loading JSON:", error);
-//   }
-// };

@@ -7,6 +7,7 @@ interface CollapsibleProps {
   content: any;
   level?: number;
   open?: boolean;
+  onClick: () => void;
 }
 
 export default function Collapsible({
@@ -14,13 +15,15 @@ export default function Collapsible({
   content,
   level = 0,
   open = false,
+  onClick,
 }: CollapsibleProps) {
   // const [opened, { toggle }] = useDisclosure(false);
 
   const [isOpen, setIsOpen] = useState(open);
 
-  const toggle = () => {
+  const handleClick = () => {
     setIsOpen((open) => !open);
+    onClick();
   };
 
   const renderObject = (object: any) => {
@@ -48,6 +51,7 @@ export default function Collapsible({
           content={obj}
           level={level + 1}
           key={`${obj.parameterName}-${index}`}
+          onClick={onClick}
         />
       );
     });
@@ -70,7 +74,7 @@ export default function Collapsible({
         style={{
           paddingLeft: `calc(0.25rem * ${level * 5} + 10px)`,
         }}
-        onClick={toggle}
+        onClick={handleClick}
       >
         <div>
           {isOpen ? (

@@ -1,9 +1,9 @@
 import { NodeData, EdgeData } from "reaflow";
 
-type CustomNodeExtraData = {
+export type CustomNodeExtraData = {
   type: "product" | "operation" | "material";
   isUnregistered: boolean;
-  content: string;
+  content: any;
 };
 
 /**

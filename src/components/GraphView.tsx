@@ -3,10 +3,9 @@ import debounce from "lodash.debounce";
 import { Space } from "react-zoomable-ui";
 import { Canvas } from "reaflow";
 import type { ElkRoot } from "reaflow";
-import { CustomNodeData } from "../types/node";
 import CustomNode from "./CustomNode";
 import { useTree } from "../context/graphContext";
-import { cloneDeep } from "lodash";
+import { LoadingOverlay } from "@mantine/core";
 
 const layoutOptions = {
   // "elk.layered.compaction.postCompaction.strategy": "EDGE_LENGTH",
@@ -16,12 +15,12 @@ const layoutOptions = {
 const GraphCanvas = () => {
   const [paneWidth, setPaneWidth] = React.useState(2000);
   const [paneHeight, setPaneHeight] = React.useState(2000);
-  const { graph, setGraph, centerView } = useTree();
+  const { graph, centerView, isLoading, setIsLoading } = useTree();
 
   const onLayoutChange = React.useCallback(
     (layout: ElkRoot) => {
+      console.log("canvas layout has changed");
       if (layout.width && layout.height) {
-        console.log(layout.width, layout.height);
         const areaSize = layout.width * layout.height;
         const changeRatio = Math.abs(
           (areaSize * 100) / (paneWidth * paneHeight) - 100
@@ -29,47 +28,24 @@ const GraphCanvas = () => {
 
         setPaneWidth(layout.width + 50);
         setPaneHeight((layout.height as number) + 50);
+
+        // should not need to add delay, but otherwise it flickers
         setTimeout(() => {
-          // validateHiddenNodes();
           window.requestAnimationFrame(() => {
             if (changeRatio > 70) centerView();
-            // setLoading(false);
+            setIsLoading(false);
           });
-        });
+        }, 100);
       }
     },
-    [paneHeight, paneWidth, centerView]
+    [paneHeight, paneWidth, centerView, setIsLoading]
   );
-
-  const updateCurrentNode = (nodeData: CustomNodeData): void => {
-    const id = nodeData.id;
-    console.log("Updating current node with", nodeData);
-    const nodeToUpdateIndex = graph!.nodes.findIndex(
-      (node: CustomNodeData) => node.id === id
-    );
-    console.log("updateCurrentNode nodeToUpdateIndex", nodeToUpdateIndex);
-    const nodeToUpdate = {
-      ...graph?.nodes[nodeToUpdateIndex],
-      ...nodeData,
-      id, // Force keep same id to avoid edge cases
-    };
-    console.log("updateCurrentNode updated node", nodeToUpdate);
-
-    const newNodes = cloneDeep(graph!.nodes);
-    newNodes[nodeToUpdateIndex] = nodeToUpdate;
-    console.log("updateCurrentNode new nodes", newNodes);
-
-    const edges = graph!.edges;
-    setGraph({ nodes: newNodes, edges });
-  };
 
   return (
     <Canvas
       className="canvas"
       onLayoutChange={onLayoutChange}
-      node={(p) => (
-        <CustomNode node={p} updateCurrentNode={updateCurrentNode} />
-      )}
+      node={(p) => <CustomNode {...p} />}
       nodes={graph?.nodes}
       edges={graph?.edges}
       arrow={null}

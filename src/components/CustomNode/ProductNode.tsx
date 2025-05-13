@@ -3,9 +3,9 @@ import { Node } from "reaflow";
 import type { CustomNodeData } from "../../types/node";
 import { useTree } from "../../context/graphContext";
 import { BsBoxFill } from "react-icons/bs";
-import { NodeProps213 } from ".";
+import { Props } from ".";
 
-export default function ProductNode({ node, updateCurrentNode }: NodeProps213) {
+export default function ProductNode({ node, updateCurrentNode }: Props) {
   const { setSelectedNode } = useTree();
 
   const handleClick = (

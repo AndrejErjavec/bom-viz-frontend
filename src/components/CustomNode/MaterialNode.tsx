@@ -3,12 +3,9 @@ import { Node } from "reaflow";
 import { useTree } from "../../context/graphContext";
 import { GiStoneBlock } from "react-icons/gi";
 import { CustomNodeData } from "../../types/node";
-import { NodeProps213 } from ".";
+import { Props } from ".";
 
-export default function MaterialNode({
-  node,
-  updateCurrentNode,
-}: NodeProps213) {
+export default function MaterialNode({ node, updateCurrentNode }: Props) {
   const { setSelectedNode } = useTree();
 
   const handleClick = (
@@ -17,6 +14,7 @@ export default function MaterialNode({
   ) => {
     setSelectedNode(data);
   };
+
   return (
     <Node
       {...node}
